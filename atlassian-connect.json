@@ -1,6 +1,6 @@
 {
     "key": "chef-server-interaction",
-    "name": "chef",
+    "name": "Chef",
     "description": "A add-on that interacts with the Chef server from Chef Software.",
     "vendor": {
         "name": "Chef Software, Inc",

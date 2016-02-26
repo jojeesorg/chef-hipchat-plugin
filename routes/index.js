@@ -150,8 +150,18 @@ module.exports = function (app, addon) {
                      if (command.command.trim().toLowerCase() === 'status' && command.optionList != null && command.optionList.length > 0) {
 
                          chef.getNode(command.optionList[0], function(err, res) {
-                             if(err) //TODO need to add a better "self signed cert error, mabye red in chat?
-                                 throw err;
+                             if(err) {
+                                 var options = {
+                                     options: {
+                                         color: "red"
+                                     }
+                                 };
+                                 hipchat.sendMessage(req.clientInfo, req.context.item.room.id, '<strong>'+err.toString()+'</strong>', options)
+                                 .then(function (data) {
+                                     res.send(200);
+                                 });
+                                 return;
+                             };
 
                              var timeSinceConverge = (seconds - res.automatic.ohai_time);
                              var duration = moment.duration(Math.floor(timeSinceConverge), 'seconds');
@@ -161,9 +171,10 @@ module.exports = function (app, addon) {
                                  fqdn: res.automatic.fqdn
                              };
 
-                             var stringResult = JSON.stringify(jsonResult, null, 2);
+                             var timeString = JSON.stringify(jsonResult.timeSinceConverge, null, 2).replace(/"/g,'');
+                             var fqdnString = JSON.stringify(jsonResult.fqdn, null, 2).replace(/"/g,'');
 
-                             hipchat.sendMessage(req.clientInfo, req.context.item.room.id, stringResult, options)
+                             hipchat.sendMessage(req.clientInfo, req.context.item.room.id, '<strong>'+fqdnString+'</strong>' + ' successfully converged ' + timeString + ' ago.', options)
                                  .then(function (data) {
                                      res.send(200);
                                  });
@@ -172,10 +183,24 @@ module.exports = function (app, addon) {
                      } else if (command.optionList == 'status') {
 
                          chef.getNodes(function(err, res) {
-                             if(err) //TODO need to add a better "self signed cert error, mabye red in chat?
-                                 throw err;
+                             if(err) {
+                                 var options = {
+                                     options: {
+                                         color: "red"
+                                     }
+                                 };
+                                 hipchat.sendMessage(req.clientInfo, req.context.item.room.id, '<strong>'+err.toString()+'</strong>', options)
+                                 .then(function (data) {
+                                     res.send(200);
+                                 });
+                                 return;
+                             };
 
-                             var stringResult = JSON.stringify(res, null, 2);
+                             var stringResult = '';
+
+                             Object.keys(res).forEach(function (key) {
+                                 stringResult += key +  '<br>';
+                             });
 
                              hipchat.sendMessage(req.clientInfo, req.context.item.room.id, stringResult, options)
                                  .then(function (data) {
@@ -186,8 +211,18 @@ module.exports = function (app, addon) {
                      } else if (command.optionList == 'health') {
 
                          chef.getStatus(function(err, res) {
-                             if(err) //TODO need to add a better "self signed cert error, mabye red in chat?
-                                 throw err;
+                             if(err) {
+                                 var options = {
+                                     options: {
+                                         color: "red"
+                                     }
+                                 };
+                                 hipchat.sendMessage(req.clientInfo, req.context.item.room.id, 'Sorry, you need to have the <strong>pivotal</strong> key to get this data. '+err.toString()+'</strong>', options)
+                                     .then(function (data) {
+                                         res.send(200);
+                                     });
+                                 return;
+                             };
 
                              hipchat.sendMessage(req.clientInfo, req.context.item.room.id, res, options)
                                  .then(function (data) {
@@ -197,8 +232,19 @@ module.exports = function (app, addon) {
                      } else if (command.optionList == 'license') {
 
                          chef.getLicense(function(err, res) {
-                             if(err) //TODO need to add a better "self signed cert error, mabye red in chat?
-                                 throw err;
+                             if(err) {
+                                 var options = {
+                                     options: {
+                                         color: "red"
+                                     }
+                                 };
+                                 hipchat.sendMessage(req.clientInfo, req.context.item.room.id, '<strong>'+err.toString()+'</strong>', options)
+                                     .then(function (data) {
+                                         res.send(200);
+                                     });
+                                 return;
+                             };
+
 
                              hipchat.sendMessage(req.clientInfo, req.context.item.room.id, res, options)
                                  .then(function (data) {

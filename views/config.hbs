@@ -5,7 +5,7 @@
       <h3>If you have a self signed certificate, you will want to set the SSL to 0.</h3>
         <form method="post" action='/config?signed_request={{{signed_request}}}'>
             <h3>Username:</h3><input type='text' value='{{{username}}}' name='username' />
-            <h3>Private Key:</h3> <textarea name='privateKey' >{{{privateKey}}}</textarea>
+            <h3>Private Key:</h3> <textarea style='max-width:400px;min-width:100px' name='privateKey' >{{{privateKey}}}</textarea>
             <h3>URL:</h3> <input type='text' value='{{{url}}}' name='url' />
             <h3>SSL:</h3> <input type='text' value='{{{ssl}}}' name='ssl' />
             <input type='submit'>
