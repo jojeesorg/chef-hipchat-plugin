@@ -135,7 +135,7 @@ module.exports = function (app, addon) {
                  addon.settings.get('configData',req.clientInfo.clientKey).then(function(data){
                      var options = {
                          user_name: data.username,
-                         key_path: data.privateKey,
+                         key: data.privateKey,
                          url: data.url
                      }
 
@@ -143,7 +143,6 @@ module.exports = function (app, addon) {
 
                      var command = req.body.item.message.message;
                      command = parseCommand(command);
-                     console.log(command);
 
                      // needs fqdn to work
                      if (command.command.trim().toLowerCase() === 'status' && command.optionList != null && command.optionList.length > 0) {
