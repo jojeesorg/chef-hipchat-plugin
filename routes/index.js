@@ -1,5 +1,3 @@
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-
 var http = require('request');
 var cors = require('cors');
 var uuid = require('uuid');
@@ -52,10 +50,12 @@ module.exports = function (app, addon) {
                         config.username = data.username;
                         config.privateKey = data.privateKey;
                         config.url = data.url;
+                        config.ssl = data.ssl;
                     } else {
                         config.username = '';
                         config.privateKey = '';
                         config.url = '';
+                        config.ssl = '1';
                     }
 
                     res.render('config', config);
@@ -72,6 +72,7 @@ module.exports = function (app, addon) {
                  validData.username = req.body.username;
                  validData.privateKey = req.body.privateKey;
                  validData.url = req.body.url;
+                 validData.ssl = req.body.ssl;
                  addon.settings.set('configData', validData, req.clientInfo.clientKey);
                  res.redirect('/config?signed_request=' + res.locals.signed_request);
              }
@@ -133,6 +134,7 @@ module.exports = function (app, addon) {
                  var seconds = epochTimeMilli / 1000;
 
                  addon.settings.get('configData',req.clientInfo.clientKey).then(function(data){
+                     process.env.NODE_TLS_REJECT_UNAUTHORIZED = data.ssl;
                      var options = {
                          user_name: data.username,
                          key: data.privateKey,
@@ -148,7 +150,7 @@ module.exports = function (app, addon) {
                      if (command.command.trim().toLowerCase() === 'status' && command.optionList != null && command.optionList.length > 0) {
 
                          chef.getNode(command.optionList[0], function(err, res) {
-                             if(err)
+                             if(err) //TODO need to add a better "self signed cert error, mabye red in chat?
                                  throw err;
 
                              var timeSinceConverge = (seconds - res.automatic.ohai_time);
@@ -165,12 +167,12 @@ module.exports = function (app, addon) {
                                  .then(function (data) {
                                      res.send(200);
                                  });
-                         });
+                             });
 
                      } else if (command.optionList == 'status') {
 
                          chef.getNodes(function(err, res) {
-                             if(err)
+                             if(err) //TODO need to add a better "self signed cert error, mabye red in chat?
                                  throw err;
 
                              var stringResult = JSON.stringify(res, null, 2);
@@ -184,10 +186,8 @@ module.exports = function (app, addon) {
                      } else if (command.optionList == 'health') {
 
                          chef.getStatus(function(err, res) {
-                             if(err)
+                             if(err) //TODO need to add a better "self signed cert error, mabye red in chat?
                                  throw err;
-
-                             //var stringResult = JSON.stringify(res, null, 2);
 
                              hipchat.sendMessage(req.clientInfo, req.context.item.room.id, res, options)
                                  .then(function (data) {
@@ -197,10 +197,8 @@ module.exports = function (app, addon) {
                      } else if (command.optionList == 'license') {
 
                          chef.getLicense(function(err, res) {
-                             if(err)
+                             if(err) //TODO need to add a better "self signed cert error, mabye red in chat?
                                  throw err;
-
-                             //var stringResult = JSON.stringify(res, null, 2);
 
                              hipchat.sendMessage(req.clientInfo, req.context.item.room.id, res, options)
                                  .then(function (data) {
