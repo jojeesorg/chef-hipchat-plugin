@@ -32,7 +32,7 @@
         "glance": [
             {
                "name": {
-                   "value": "Hello!"
+                   "value": "Chef!"
                },
                "queryUrl": "{{localBaseUrl}}/glance",
                "key": "chef.glance",
@@ -47,7 +47,7 @@
             {
                 "key": "chef.sidebar",
                 "name": {
-                    "value": "Hello Sidebar!"
+                    "value": "Che Sidebar!"
                 },
                 "location": "hipchat.sidebar.right",
                 "url": "{{localBaseUrl}}/sidebar"
@@ -80,7 +80,7 @@
             {
                 "key": "chef.action",
                 "name": {
-                    "value": "Launch Hello Dialog!"
+                    "value": "Chef!"
                 },
                 "target": "chef.dialog",
                 "location": "hipchat.input.action"

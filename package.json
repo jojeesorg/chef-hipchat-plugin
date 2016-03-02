@@ -1,6 +1,6 @@
 {
     "name": "chef-hipchat",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "Interact with a Chef server from HipChat.",
     "author": "Partner Engineering <partnereng@chef.io>",
     "private": true,

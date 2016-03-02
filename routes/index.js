@@ -59,7 +59,6 @@ module.exports = function (app, addon) {
                     }
 
                     res.render('config', config);
-                    console.log(JSON.stringify(config));
                 }).catch
                     (console.log)}
            );
@@ -67,7 +66,6 @@ module.exports = function (app, addon) {
     app.post('/config',
              addon.authenticate(),
              function(req, res) {
-                 console.log(req.body);
                  var validData = {};
                  validData.username = req.body.username;
                  validData.privateKey = req.body.privateKey;
@@ -97,25 +95,25 @@ module.exports = function (app, addon) {
     // Room update API: https://www.hipchat.com/docs/apiv2/method/room_addon_ui_update
     // Group update API: https://www.hipchat.com/docs/apiv2/method/addon_ui_update
     // User update API: https://www.hipchat.com/docs/apiv2/method/user_addon_ui_update
-    app.post('/update_glance',
-             cors(),
-             addon.authenticate(),
-             function(req, res){
-                 res.json({
-                     "label": {
-                         "type": "html",
-                         "value": "Hello World!"
-                     },
-                     "status": {
-                         "type": "lozenge",
-                         "value": {
-                             "label": "All good",
-                             "type": "success"
-                         }
-                     }
-                 });
-             }
-            );
+    // app.post('/update_glance',
+    //          cors(),
+    //          addon.authenticate(),
+    //          function(req, res){
+    //              res.json({
+    //                  "label": {
+    //                      "type": "html",
+    //                      "value": "Hello World!"
+    //                  },
+    //                  "status": {
+    //                      "type": "lozenge",
+    //                      "value": {
+    //                          "label": "All good",
+    //                          "type": "success"
+    //                      }
+    //                  }
+    //              });
+    //          }
+    //         );
 
     app.post('/webhook',
              addon.authenticate(),
@@ -140,7 +138,7 @@ module.exports = function (app, addon) {
                      command = parseCommand(command);
 
                      // needs fqdn to work
-                     if (command.command.trim().toLowerCase() === 'status' && command.optionList != null && command.optionList.length > 0) {
+                     if (command.command.trim().toLowerCase() === 'node-status' && command.optionList != null && command.optionList.length > 0) {
 
                          chef.getNode(command.optionList[0], function(err, res) {
                              if(err) {
@@ -330,37 +328,37 @@ module.exports = function (app, addon) {
     // https://www.hipchat.com/docs/apiv2/method/send_room_notification.
     // For more information on Cards, take a look at:
     // https://developer.atlassian.com/hipchat/guide/hipchat-ui-extensions/cards
-    app.post('/send_notification',
-             addon.authenticate(),
-             function (req, res) {
-                 var card = {
-                     "style": "link",
-                     "url": "https://www.hipchat.com",
-                     "id": uuid.v4(),
-                     "title": "El HipChat!",
-                     "description": "Great teams use HipChat: Group and private chat, file sharing, and integrations",
-                     "icon": {
-                         "url": "https://hipchat-public-m5.atlassian.com/assets/img/hipchat/bookmark-icons/favicon-192x192.png"
-                     }
-                 };
-                 var msg = '<b>' + card.title + '</b>: ' + card.description;
-                 var opts = {'options': {'color': 'yellow'}};
-                 hipchat.sendMessage(req.clientInfo, req.identity.roomId, msg, opts, card);
-                 res.json({status: "ok"});
-             }
-            );
+    // app.post('/send_notification',
+    //          addon.authenticate(),
+    //          function (req, res) {
+    //              var card = {
+    //                  "style": "link",
+    //                  "url": "https://www.hipchat.com",
+    //                  "id": uuid.v4(),
+    //                  "title": "El HipChat!",
+    //                  "description": "Great teams use HipChat: Group and private chat, file sharing, and integrations",
+    //                  "icon": {
+    //                      "url": "https://hipchat-public-m5.atlassian.com/assets/img/hipchat/bookmark-icons/favicon-192x192.png"
+    //                  }
+    //              };
+    //              var msg = '<b>' + card.title + '</b>: ' + card.description;
+    //              var opts = {'options': {'color': 'yellow'}};
+    //              hipchat.sendMessage(req.clientInfo, req.identity.roomId, msg, opts, card);
+    //              res.json({status: "ok"});
+    //          }
+    //         );
 
     // This is an example route to handle an incoming webhook
     // https://developer.atlassian.com/hipchat/guide/webhooks
-    app.post('/webhook',
-             addon.authenticate(),
-             function(req, res) {
-                 hipchat.sendMessage(req.clientInfo, req.context.item.room.id, 'pong')
-                     .then(function(data){
-                         res.sendStatus(200);
-                     });
-             }
-            );
+    // app.post('/webhook',
+    //          addon.authenticate(),
+    //          function(req, res) {
+    //              hipchat.sendMessage(req.clientInfo, req.context.item.room.id, 'pong')
+    //                  .then(function(data){
+    //                      res.sendStatus(200);
+    //                  });
+    //          }
+    //         );
 
     // Notify the room that the add-on was installed. To learn more about
     // Connect's install flow, check out:
