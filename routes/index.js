@@ -173,6 +173,15 @@ module.exports = function (app, addon) {
                                  });
                              });
 
+                     } else if (command.optionList == 'unikitty') {
+
+                         unikitty = "<img src='http://pages.chef.io/rs/255-VFB-268/images/unikitten-plain.jpg'><br>"
+
+                         hipchat.sendMessage(req.clientInfo, req.context.item.room.id, unikitty, options)
+                             .then(function (data) {
+                                 res.send(200);
+                             });
+
                      } else if (command.optionList == 'nodes') {
 
                          chef.getNodes(function(err, res) {
