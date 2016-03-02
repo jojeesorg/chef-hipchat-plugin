@@ -87,14 +87,7 @@ module.exports = function (app, addon) {
                 res.json({
                     "label": {
                         "type": "html",
-                        "value": "Hello World!"
-                    },
-                    "status": {
-                        "type": "lozenge",
-                        "value": {
-                            "label": "Broken",
-                            "type": "error"
-                        }
+                        "value": "Chef"
                     }
                 });
             }
@@ -180,7 +173,7 @@ module.exports = function (app, addon) {
                                  });
                              });
 
-                     } else if (command.optionList == 'status') {
+                     } else if (command.optionList == 'nodes') {
 
                          chef.getNodes(function(err, res) {
                              if(err) {
@@ -225,6 +218,45 @@ module.exports = function (app, addon) {
                              };
 
                              hipchat.sendMessage(req.clientInfo, req.context.item.room.id, res, options)
+                                 .then(function (data) {
+                                     res.send(200);
+                                 });
+                         });
+                     } else if (command.optionList == 'smalltown') {
+
+                         youtube = '<a href="https://www.youtube.com/watch?v=1k8craCGpgs">https://www.youtube.com/watch?v=1k8craCGpgs</a>';
+
+                         hipchat.sendMessage(req.clientInfo, req.context.item.room.id, youtube, options)
+                             .then(function (data) {
+                                 res.send(200);
+                             });
+
+                     } else if (command.command.trim().toLowerCase() === 'environment' && command.optionList != null && command.optionList.length > 0) {
+                         chef.getEnvironmentCookbooks(command.optionList[0], function(err, res) {
+                             if(err) {
+                                 var options = {
+                                     options: {
+                                         color: "red"
+                                     }
+                                 };
+                                 hipchat.sendMessage(req.clientInfo, req.context.item.room.id, '<strong>'+err.toString()+'</strong>', options)
+                                     .then(function (data) {
+                                         res.send(200);
+                                     });
+                                 return;
+                             };
+
+
+                             var cookbook = JSON.stringify(res);
+
+                             var stringResult = '';
+
+                             Object.keys(res).forEach(function(cookbook) {
+                                 var version = res[cookbook].versions[0].version;
+                                 stringResult += cookbook + ' ' + 'version: ' + version + '<br>';
+                             });
+
+                             hipchat.sendMessage(req.clientInfo, req.context.item.room.id, stringResult, options)
                                  .then(function (data) {
                                      res.send(200);
                                  });

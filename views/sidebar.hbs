@@ -2,22 +2,12 @@
 <div class="aui-group sidebar">
     <div class="aui-row">
         <div class="aui-item">
-            <h3>Your sidebar goes here!</h3>
+            <h3>Chef Resources</h3>
             <ul>
-            <li>Group ID: {{identity.groupId}}</li>
-            <li>
-                Room ID: {{identity.roomId}}
-                <small>
-                    <a href="#" id="room">room details</a> |
-                    <a href="#" id="participants">participants</a>
-                </small>
-            </li>
-            <li>
-                User ID: {{identity.userId}}
-                <small>
-                    <a href="#" id="user">user details</a>
-                </small>
-            </li>
+                <li><a target="_blank" href="https://chef.io">Chef, Inc.</a></li>
+                <li><a target="_blank" href="https://learn.chef.io">Learn Chef</a></li>
+                <li><a target="_blank" href="https://docs.chef.io">Chef Documentation</a></li>
+                <li><a target="_blank" href="https://docs.chef.io/resources.html">Chef Resources Reference</a></li>
             </ul>
         </div>
     </div>
@@ -35,6 +25,7 @@
         </div>
     </div>
 </div>
+
 <script>
 $('#say_hello').on('click', function(){
     $.ajax({

@@ -5,10 +5,12 @@ A plugin for HipChat to get information from the Chef server
 
 ## Commands
 
-- `/chef status` - Lists out all the machine that your chef server knows about
-- `/chef status FQDN` - Returns information since the last converge of machine
+- `/chef environment NAME` - Returns what is cookbooks are active in this environment
 - `/chef health` - Returns the health information of your chef server
 - `/chef license` - Returns the license usage for your chef server
+- `/chef nodes` - Lists out all the machine that your chef server knows about
+TODO - `/chef node FQDN` - Gives full attributes of the machine
+- `/chef status FQDN` - Returns information since the last converge of machine
 
 ## What's next?
 

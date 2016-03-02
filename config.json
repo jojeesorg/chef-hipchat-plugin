@@ -30,7 +30,7 @@
 
     // ace-abotars also supports the following additional parameters
     // File name (from root of project):
-    //"avatarFileName" : "avatar.png",
+    "avatarFileName" : "avatar.png",
     // Expiry time (only used in production)
     //"avatarExpiryTime" : 86400,
 
