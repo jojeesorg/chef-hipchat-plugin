@@ -8,7 +8,7 @@ These are the steps to install this `nodejs` application by hand.
 1. Clone the [chef-hipchat-plugin][chef-hipchat-plugin] if you havent, `cd` into that directory.
 1. Login to the heroku cli: `heroku login`
 1. Create the heroku instance: `heroku create`
-1. Take note of the application URL, edit the `config.json` line 96, with that URL.
+1. Take note of the heroku application URL, edit the `config.json` line 96, with that URL.
 1. Commit this change to `master`: `git commit -ma 'edited heroku location'`
 1. Verify that a new remote was created called `heroku`: `git remote -v`
 1. Push the code to heroku's remote: `git push heroku master`
@@ -20,7 +20,7 @@ These are the steps to install this `nodejs` application by hand.
 1. Verify that your app runs locally: `heroku local web`
 1. Provision Redis via an addon: heroku addons: `heroku addons:create heroku-redis:hobby-dev`
 1. Verify the application is running correctly: `heroku logs`
-1. Go to your location, `https://<URL>.herokuapp.com/atlassian-connect.json` you should see your application ready to install.
+1. Go to your location, `https://<name>.herokuapp.com/atlassian-connect.json` you should see your application ready to install.
 1. Inside Hipchat, click on `Configure integrations` on the bottom right.
 1. Scroll to the bottom of the page, and click `Install an integration from a descriptor URL`.
 1. Paste your heroku URL with `atlassian-connect.json` on the end to the `Descriptor URL box`, click Install.
