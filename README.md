@@ -15,6 +15,7 @@ A plugin for Hipchat to get information from the Chef server.
 ### Local instance
 
 - If you would like to run this behind your own firewall, you should use the [chef-hipchat-plugin-cookbook][chef-hipchat-cookbook]. There are a few things you need to do to set it up.
+
 1. Provision a Ubuntu 14.4 machine
 1. Install chef-client on the machine
 1. Either upload the [chef-hipchat-plugin-cookbook][chef-hipchat-cookbook] to your chef server, or run the `chef-solo` command that it suggests.
