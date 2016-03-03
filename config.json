@@ -93,7 +93,7 @@
     // that to be honored here.
     "port": "$PORT",
     // This is the public URL to your production add-on.
-    "localBaseUrl": "https://your-subdomain.herokuapp.com",
+    "localBaseUrl": "https://infinite-beach-60467.herokuapp.com",
     "store": {
       // Let's use Redis as our default data store in prod
       "adapter": "redis",
