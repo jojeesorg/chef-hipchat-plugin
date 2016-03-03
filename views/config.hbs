@@ -1,0 +1,14 @@
+{{!< layout}}
+<div class="aui-group">
+    <div class="aui-item">
+      <h3>This to configure talking to your chef server. You should create a Read Only user for this.</h3>
+      <h3>If you have a self signed certificate, you will want to set the SSL to 0.</h3>
+        <form method="post" action='/config?signed_request={{{signed_request}}}'>
+            <h4>Username:</h4><input type='text' value='{{{username}}}' name='username' />
+            <h4>Private Key:</h4> <textarea style='max-width:400px;min-width:100px' name='privateKey' >{{{privateKey}}}</textarea>
+            <h4>URL:</h4> <input type='text' value='{{{url}}}' name='url' />
+            <h4>SSL:</h4> <input type='text' value='{{{ssl}}}' name='ssl' />
+            <input type='submit'>
+        </form>
+    </div>
+</div>

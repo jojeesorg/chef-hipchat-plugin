@@ -1,0 +1,10 @@
+{
+  "name": "chef-hipchat-plugin",
+  "description": "A plugin for Hipchat to get information from a Chef server.",
+  "repository": "https://github.com/chef-partners/chef-hipchat-plugin",
+  "logo": "https://github.com/chef-partners/chef-hipchat-plugin/blob/master/public/img/logo.png",
+  "keywords": ["node", "chef", "chatops"],
+  "addons": [
+    "heroku-redis:hobby-dev"
+  ]
+}
