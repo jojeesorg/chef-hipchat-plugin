@@ -10,7 +10,7 @@ Deploy/Install this plugin, then configure it. Both are explained in this README
 #### Heroku Button
 
 1. First click the following button to provision the instance: [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/chef-partners/chef-hipchat-plugin/blob/master)
-1. After provisioning is done, set up [heroku toolbelt][herkou_toolbelt]
+1. After provisioning is done, set up [heroku toolbelt][heroku_toolbelt]
 1. Login to the heroku cli: `heroku login`
 1. Clone the git repo that is under the settings, `cd` into that directory.
 1. Take note of the heroku application URL, edit the `config.json` line 96, with that URL.
