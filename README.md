@@ -1,6 +1,6 @@
 # chef-hipchat-plugin
 
-A plugin for HipChat to get information from the Chef server.
+A plugin for Hipchat to get information from the Chef server.
 
 ## Deployment or Installation
 
@@ -8,6 +8,9 @@ A plugin for HipChat to get information from the Chef server.
 
 - If you would like to spin this up via [heroku][heroku] by hand, click here: [docs/deployment/heroku.md](docs/deployment/heroku.md)
 
+- We also have a push to Heroku Provisioning Button. [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/chef-partners/chef-hipchat-plugin/blob/master)
+
+- Note, you should check your `localBaseUrl` on line 96 of [config.json](config.json) to verify it's the correct URL.
 
 ### Local instance
 
@@ -23,7 +26,7 @@ A plugin for HipChat to get information from the Chef server.
 
 Author:: Chef Partner Engineering (<partnereng@chef.io>)
 
-Copyright:: Copyright (c) 2015 Chef Software, Inc.
+Copyright:: Copyright (c) 2016 Chef Software, Inc.
 
 License:: Apache License, Version 2.0
 
