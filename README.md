@@ -14,6 +14,13 @@ A plugin for Hipchat to get information from the Chef server.
 
 ### Local instance
 
+- If you would like to run this behind your own firewall, you should use the [chef-hipchat-plugin-cookbook][chefhipchatcoobook]. There are a few things you need to do to set it up.
+1. Provision a Ubuntu 14.4 machine
+1. Install chef-client on the machine
+1. Either upload the [chef-hipchat-plugin-cookbook][chef-hipchat-plugin-cookbook] to your chef server, or run the `chef-solo` command that it suggests.
+1. Verify that you can connect to that machine, and see the http://<machine>/atlassian-connect.json
+1. If your hipchat instance can reach the machine, and you chef server can reach the machine you've installed the plugin, you should be good to go.
+
 ## Commands
 
 - `/chef environment NAME` - Returns what is cookbooks are active in this environment
@@ -51,3 +58,4 @@ and limitations under the License.
 5. Create a new Pull Request
 
 [heroku]: http://heroku.com
+[chefhipchatcookbook]: https://github.com/chef-partners/chef-hipchat-plugin-cookbook
