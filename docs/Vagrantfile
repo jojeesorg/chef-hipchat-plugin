@@ -1,0 +1,26 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "bento/ubuntu-14.04"
+  config.vm.network "forwarded_port", guest: 22, host: 8022
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 443, host: 8443
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "6024"]
+  end
+
+  config.vm.provision "shell", inline: <<-SHELL
+      apt-get update
+      apt-get install -y git curl wget
+      curl -L https://chef.sh | sudo bash
+      wget -O /tmp/chef-server.deb https://packagecloud.io/chef/stable/packages/ubuntu/trusty/chef-server-core_12.4.1-1_amd64.deb/download
+      dpkg -i /tmp/chef-server.deb
+      chef-server-ctl reconfigure
+      chef-server-ctl user-create chefie chef boyardee chef@example.com 'chef'
+      chef-server-ctl org-create default 'truly default' --association_user chefie --filename default-validator.pem
+    SHELL
+end
