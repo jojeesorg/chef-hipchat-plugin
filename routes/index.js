@@ -172,24 +172,32 @@ module.exports = function (app, addon) {
                                  "title": jsonResult.fqdn,
                                  "description": fqdnString + " successfully converged " + timeString + " ago.",
                                  "icon": {
-                                     "url": "http://i.imgur.com/zBLKh5G.png"
+                                     "url": "http://emojipedia-us.s3.amazonaws.com/cache/1b/df/1bdf10d829ad6873c0f5157b263178ec.png"
                                  }
                              };
                              var msg = '<b>' + card.title + '</b>: ' + card.description;
                              var opts = {'options': {'color': 'yellow'}};
                              hipchat.sendMessage(req.clientInfo, req.context.item.room.id, msg, opts, card);
 
-                             hipchat.sendMessage(req.clientInfo, req.context.item.room.id, '<strong>'+fqdnString+'</strong>' + ' successfully converged ' + timeString + ' ago.', options)
-                                 .then(function (data) {
-                                     res.send(200);
-                                 });
                              });
 
                      } else if (command.optionList == 'unikitty') {
 
-                         unikitty = "<img src='http://pages.chef.io/rs/255-VFB-268/images/unikitten-plain.jpg'><br>"
+                         var card = {
+                             "style": "image",
+                             "id": uuid.v4(),
+                             "url": "http://pages.chef.io/rs/255-VFB-268/images/unikitten-plain.jpg",
+                             "title": "Unikitty is always watching",
+                             "thumbnail": {
+                                 "url": "http://pages.chef.io/rs/255-VFB-268/images/unikitten-plain.jpg",
+                                 "width": 1193,
+                                 "height": 564
+                             }
+                         };
 
-                         hipchat.sendMessage(req.clientInfo, req.context.item.room.id, unikitty, options)
+                         var msg = '<b>' + card.title + '</b>:' + card.title;
+
+                         hipchat.sendMessage(req.clientInfo, req.context.item.room.id, msg, options, card)
                              .then(function (data) {
                                  res.send(200);
                              });
