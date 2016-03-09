@@ -221,10 +221,27 @@ module.exports = function (app, addon) {
                              var stringResult = '';
 
                              Object.keys(res).forEach(function (key) {
-                                 stringResult += key +  '<br>';
+                                 stringResult += key +  '\n';
                              });
 
-                             hipchat.sendMessage(req.clientInfo, req.context.item.room.id, stringResult, options)
+                             var card = {
+                                 "style": "application",
+                                 "url": "https://chef.io",
+                                 "format": "medium",
+                                 "id": uuid.v4(),
+                                 "title": "List of nodes known by the chef server",
+                                 "description": stringResult,
+                                 "icon": {
+                                     "url": "http://emojipedia-us.s3.amazonaws.com/cache/1b/df/1bdf10d829ad6873c0f5157b263178ec.png"
+                                 },
+                                 "activity": {
+                                     "html": "Here's a list of your <b>nodes</b>, it may be long list..."
+                                 }
+                             };
+
+                             var msg = '<b>' + card.title + '</b>:' + card.title;
+
+                             hipchat.sendMessage(req.clientInfo, req.context.item.room.id, msg, options, card)
                                  .then(function (data) {
                                      res.send(200);
                                  });
