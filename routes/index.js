@@ -302,7 +302,24 @@ module.exports = function (app, addon) {
                                  stringResult += cookbook + ' ' + 'version: ' + version + '<br>';
                              });
 
-                             hipchat.sendMessage(req.clientInfo, req.context.item.room.id, stringResult, options)
+                             var card = {
+                                 "style": "application",
+                                 "url": "https://chef.io",
+                                 "format": "medium",
+                                 "id": uuid.v4(),
+                                 "title": "List of cookbooks per environment known by the chef server",
+                                 "description": stringResult,
+                                 "icon": {
+                                     "url": "http://emojipedia-us.s3.amazonaws.com/cache/6b/8b/6b8bf79c48c94487e0c70a9e90aad624.png"
+                                 },
+                                 "activity": {
+                                     "html": "Here's a list of your <b>cookboks</b> per <b>environment</b>, it may be long list..."
+                                 }
+                             };
+
+                             var msg = '<b>' + card.title + '</b>:' + card.title;
+
+                             hipchat.sendMessage(req.clientInfo, req.context.item.room.id, msg, options, card)
                                  .then(function (data) {
                                      res.send(200);
                                  });
