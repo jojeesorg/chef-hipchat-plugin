@@ -43,7 +43,7 @@ module.exports = function (app, addon) {
                 //   clientKey, oauth info, and HipChat account info
                 // * req.context: contains the context data accompanying the request like
                 //   the roomId
-                var config = {}
+                var config = {};
                 addon.settings.get('configData',req.clientInfo.clientKey).then(function(data){
                     config.identity = req.identity;
                     if (data) {
@@ -60,7 +60,8 @@ module.exports = function (app, addon) {
 
                     res.render('config', config);
                 }).catch
-                    (console.log)}
+                (console.log);
+            }
            );
 
     app.post('/config',
@@ -91,30 +92,6 @@ module.exports = function (app, addon) {
             }
            );
 
-    // This is an example end-point that you can POST to to update the glance info
-    // Room update API: https://www.hipchat.com/docs/apiv2/method/room_addon_ui_update
-    // Group update API: https://www.hipchat.com/docs/apiv2/method/addon_ui_update
-    // User update API: https://www.hipchat.com/docs/apiv2/method/user_addon_ui_update
-    // app.post('/update_glance',
-    //          cors(),
-    //          addon.authenticate(),
-    //          function(req, res){
-    //              res.json({
-    //                  "label": {
-    //                      "type": "html",
-    //                      "value": "Hello World!"
-    //                  },
-    //                  "status": {
-    //                      "type": "lozenge",
-    //                      "value": {
-    //                          "label": "All good",
-    //                          "type": "success"
-    //                      }
-    //                  }
-    //              });
-    //          }
-    //         );
-
     app.post('/webhook',
              addon.authenticate(),
              function (req, res) {
@@ -130,7 +107,7 @@ module.exports = function (app, addon) {
                          user_name: data.username,
                          key: data.privateKey,
                          url: data.url
-                     }
+                     };
 
                      chef.config(options);
 
@@ -165,17 +142,39 @@ module.exports = function (app, addon) {
                              var timeString = JSON.stringify(jsonResult.timeSinceConverge, null, 2).replace(/"/g,'');
                              var fqdnString = JSON.stringify(jsonResult.fqdn, null, 2).replace(/"/g,'');
 
-                             hipchat.sendMessage(req.clientInfo, req.context.item.room.id, '<strong>'+fqdnString+'</strong>' + ' successfully converged ' + timeString + ' ago.', options)
-                                 .then(function (data) {
-                                     res.send(200);
-                                 });
+                             var card = {
+                                 "style": "application",
+                                 "url": "https://" + jsonResult.fqdn,
+                                 "id": uuid.v4(),
+                                 "title": jsonResult.fqdn,
+                                 "description": fqdnString + " successfully converged " + timeString + " ago.",
+                                 "icon": {
+                                     "url": "http://emojipedia-us.s3.amazonaws.com/cache/1b/df/1bdf10d829ad6873c0f5157b263178ec.png"
+                                 }
+                             };
+                             var msg = '<b>' + card.title + '</b>: ' + card.description;
+                             var opts = {'options': {'color': 'yellow'}};
+                             hipchat.sendMessage(req.clientInfo, req.context.item.room.id, msg, opts, card);
+
                              });
 
                      } else if (command.optionList == 'unikitty') {
 
-                         unikitty = "<img src='http://pages.chef.io/rs/255-VFB-268/images/unikitten-plain.jpg'><br>"
+                         var card = {
+                             "style": "image",
+                             "id": uuid.v4(),
+                             "url": "http://pages.chef.io/rs/255-VFB-268/images/unikitten-plain.jpg",
+                             "title": "Unikitty is always watching",
+                             "thumbnail": {
+                                 "url": "http://pages.chef.io/rs/255-VFB-268/images/unikitten-plain.jpg",
+                                 "width": 1193,
+                                 "height": 564
+                             }
+                         };
 
-                         hipchat.sendMessage(req.clientInfo, req.context.item.room.id, unikitty, options)
+                         var msg = '<b>' + card.title + '</b>:' + card.title;
+
+                         hipchat.sendMessage(req.clientInfo, req.context.item.room.id, msg, options, card)
                              .then(function (data) {
                                  res.send(200);
                              });
@@ -199,10 +198,27 @@ module.exports = function (app, addon) {
                              var stringResult = '';
 
                              Object.keys(res).forEach(function (key) {
-                                 stringResult += key +  '<br>';
+                                 stringResult += key +  '\n';
                              });
 
-                             hipchat.sendMessage(req.clientInfo, req.context.item.room.id, stringResult, options)
+                             var card = {
+                                 "style": "application",
+                                 "url": "https://chef.io",
+                                 "format": "medium",
+                                 "id": uuid.v4(),
+                                 "title": "List of nodes known by the chef server",
+                                 "description": stringResult,
+                                 "icon": {
+                                     "url": "http://emojipedia-us.s3.amazonaws.com/cache/1b/df/1bdf10d829ad6873c0f5157b263178ec.png"
+                                 },
+                                 "activity": {
+                                     "html": "Here's a list of your <b>nodes</b>, it may be long list..."
+                                 }
+                             };
+
+                             var msg = '<b>' + card.title + '</b>:' + card.title;
+
+                             hipchat.sendMessage(req.clientInfo, req.context.item.room.id, msg, options, card)
                                  .then(function (data) {
                                      res.send(200);
                                  });
@@ -263,7 +279,24 @@ module.exports = function (app, addon) {
                                  stringResult += cookbook + ' ' + 'version: ' + version + '<br>';
                              });
 
-                             hipchat.sendMessage(req.clientInfo, req.context.item.room.id, stringResult, options)
+                             var card = {
+                                 "style": "application",
+                                 "url": "https://chef.io",
+                                 "format": "medium",
+                                 "id": uuid.v4(),
+                                 "title": "List of cookbooks per environment known by the chef server",
+                                 "description": stringResult,
+                                 "icon": {
+                                     "url": "http://emojipedia-us.s3.amazonaws.com/cache/6b/8b/6b8bf79c48c94487e0c70a9e90aad624.png"
+                                 },
+                                 "activity": {
+                                     "html": "Here's a list of your <b>cookboks</b> per <b>environment</b>, it may be long list..."
+                                 }
+                             };
+
+                             var msg = '<b>' + card.title + '</b>:' + card.title;
+
+                             hipchat.sendMessage(req.clientInfo, req.context.item.room.id, msg, options, card)
                                  .then(function (data) {
                                      res.send(200);
                                  });
@@ -290,15 +323,49 @@ module.exports = function (app, addon) {
                                      res.send(200);
                                  });
                          });
+                     } else if (command.optionList == 'help') {
+
+                         var help = {
+                             "/chef environment NAME - What is cookbooks are active in an environment": "blah",
+                             "/chef nodes - Lists out all the machine that your chef server knows about": "blah",
+                             "/chef node-status FQDN - Returns time since the last converge of machine": "blah",
+                             "Click the title to go to the detailed README and full commands.": "blah"
+                         };
+
+                         var stringResult = '';
+
+                         Object.keys(help).forEach(function (key) {
+                             stringResult += key +  '\n';
+                         });
+
+                         var card = {
+                             "style": "application",
+                             "url": "https://github.com/chef-partners/chef-hipchat-plugin/#commands",
+                             "format": "medium",
+                             "id": uuid.v4(),
+                             "title": "List of commands for the Chef Hipchat integration",
+                             "description": stringResult,
+                             "icon": {
+                                 "url": "http://emojipedia-us.s3.amazonaws.com/cache/9a/d9/9ad9efe204ca8b9626f23f2a5de99f43.png"
+                             }
+                         };
+
+                         var msg = '<b>' + card.title + '</b>:' + card.title;
+
+                         hipchat.sendMessage(req.clientInfo, req.context.item.room.id, msg, options, card)
+                             .then(function (data) {
+                                 res.send(200);
+                             });
+
                      } else {
 
-                         stringResult = "chef command not recognized.";
+                         stringResult = "chef command not recognized. Try '/chef help'";
                          options = {
                              options: {
                                  color: "red"
                              }
                          };
-                         hipchat.sendMessage(req.clientInfo, req.context.item.room.id, stringResult, options)
+                         hipchat.sendMessage(req.clientInfo, req.context.item.room.id, stringResult, options);
                      }});
              });
 
@@ -323,42 +390,6 @@ module.exports = function (app, addon) {
                 });
             }
            );
-
-    // Sample endpoint to send a card notification back into the chat room
-    // https://www.hipchat.com/docs/apiv2/method/send_room_notification.
-    // For more information on Cards, take a look at:
-    // https://developer.atlassian.com/hipchat/guide/hipchat-ui-extensions/cards
-    // app.post('/send_notification',
-    //          addon.authenticate(),
-    //          function (req, res) {
-    //              var card = {
-    //                  "style": "link",
-    //                  "url": "https://www.hipchat.com",
-    //                  "id": uuid.v4(),
-    //                  "title": "El HipChat!",
-    //                  "description": "Great teams use HipChat: Group and private chat, file sharing, and integrations",
-    //                  "icon": {
-    //                      "url": "https://hipchat-public-m5.atlassian.com/assets/img/hipchat/bookmark-icons/favicon-192x192.png"
-    //                  }
-    //              };
-    //              var msg = '<b>' + card.title + '</b>: ' + card.description;
-    //              var opts = {'options': {'color': 'yellow'}};
-    //              hipchat.sendMessage(req.clientInfo, req.identity.roomId, msg, opts, card);
-    //              res.json({status: "ok"});
-    //          }
-    //         );
-
-    // This is an example route to handle an incoming webhook
-    // https://developer.atlassian.com/hipchat/guide/webhooks
-    // app.post('/webhook',
-    //          addon.authenticate(),
-    //          function(req, res) {
-    //              hipchat.sendMessage(req.clientInfo, req.context.item.room.id, 'pong')
-    //                  .then(function(data){
-    //                      res.sendStatus(200);
-    //                  });
-    //          }
-    //         );
 
     // Notify the room that the add-on was installed. To learn more about
     // Connect's install flow, check out:
