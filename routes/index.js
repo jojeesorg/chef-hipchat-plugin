@@ -346,9 +346,47 @@ module.exports = function (app, addon) {
                                      res.send(200);
                                  });
                          });
+                     } else if (command.optionList == 'help') {
+
+                         var help = {
+                             "/chef environment NAME - Returns what is cookbooks are active in this environment": "blah",
+                             "/chef health - Returns the health information of your chef server": "blah",
+                             "/chef license - Returns the license usage for your chef server": "blah",
+                             "/chef nodes - Lists out all the machine that your chef server knows about": "blah",
+                             "/chef node-status FQDN - Returns information since the last converge of machine": "blah"
+                         };
+
+                         var stringResult = '';
+
+                         Object.keys(help).forEach(function (key) {
+                             stringResult += key +  '\n';
+                         });
+
+                         var card = {
+                             "style": "application",
+                             "url": "https://chef.io",
+                             "format": "medium",
+                             "id": uuid.v4(),
+                             "title": "List of nodes known by the chef server",
+                             "description": stringResult,
+                             "icon": {
+                                 "url": "http://emojipedia-us.s3.amazonaws.com/cache/9a/d9/9ad9efe204ca8b9626f23f2a5de99f43.png"
+                             },
+                             "activity": {
+                                 "html": "Expand this list for the commands that the chef plugin knows about..."
+                             }
+                         };
+
+                         var msg = '<b>' + card.title + '</b>:' + card.title;
+
+                         hipchat.sendMessage(req.clientInfo, req.context.item.room.id, msg, options, card)
+                             .then(function (data) {
+                                 res.send(200);
+                             });
+
                      } else {
 
-                         stringResult = "chef command not recognized.";
+                         stringResult = "chef command not recognized. Try /chef help";
                          options = {
                              options: {
                                  color: "red"
