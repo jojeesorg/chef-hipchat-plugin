@@ -423,25 +423,25 @@ module.exports = function (app, addon) {
     // https://www.hipchat.com/docs/apiv2/method/send_room_notification.
     // For more information on Cards, take a look at:
     // https://developer.atlassian.com/hipchat/guide/hipchat-ui-extensions/cards
-    app.post('/test_note',
-             addon.authenticate(),
-             function (req, res) {
-                 var card = {
-                     "style": "link",
-                     "url": "https://www.hipchat.com",
-                     "id": uuid.v4(),
-                     "title": "El HipChat!",
-                     "description": "Great teams use HipChat: Group and private chat, file sharing, and integrations",
-                     "icon": {
-                         "url": "https://hipchat-public-m5.atlassian.com/assets/img/hipchat/bookmark-icons/favicon-192x192.png"
-                     }
-                 };
-                 var msg = '<b>' + card.title + '</b>: ' + card.description;
-                 var opts = {'options': {'color': 'yellow'}};
-                 hipchat.sendMessage(req.clientInfo, req.identity.roomId, msg, opts, card);
-                 res.json({status: "ok"});
-             }
-            );
+    // app.post('/test_note',
+    //          addon.authenticate(),
+    //          function (req, res) {
+    //              var card = {
+    //                  "style": "link",
+    //                  "url": "https://www.hipchat.com",
+    //                  "id": uuid.v4(),
+    //                  "title": "El HipChat!",
+    //                  "description": "Great teams use HipChat: Group and private chat, file sharing, and integrations",
+    //                  "icon": {
+    //                      "url": "https://hipchat-public-m5.atlassian.com/assets/img/hipchat/bookmark-icons/favicon-192x192.png"
+    //                  }
+    //              };
+    //              var msg = '<b>' + card.title + '</b>: ' + card.description;
+    //              var opts = {'options': {'color': 'yellow'}};
+    //              hipchat.sendMessage(req.clientInfo, req.identity.roomId, msg, opts, card);
+    //              res.json({status: "ok"});
+    //          }
+    //         );
 
     // Sample endpoint to send a card notification back into the chat room
     // https://www.hipchat.com/docs/apiv2/method/send_room_notification.
