@@ -1,0 +1,32 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-14.04_chef-provisionerless.box"
+  config.vm.network "forwarded_port", guest: 22, host: 8022
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 443, host: 8443
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "6024"]
+  end
+
+  #
+  #
+  # You'll want to edit the user create unless you want to login as "jj"
+  #
+  #
+
+  config.vm.provision "shell", inline: <<-SHELL
+      apt-get update
+      apt-get install -y git curl wget
+      curl -L https://chef.sh | sudo bash
+      wget -O /tmp/chef-server.deb https://packagecloud.io/chef/stable/packages/ubuntu/trusty/chef-server-core_12.4.1-1_amd64.deb/download
+      dpkg -i /tmp/chef-server.deb
+      chef-server-ctl reconfigure
+      chef-server-ctl user-create jj jj asghar jj@chef.io '123456'
+      chef-server-ctl org-create default 'truely default' --association_user jj --filename default-validator.pem
+    SHELL
+end
