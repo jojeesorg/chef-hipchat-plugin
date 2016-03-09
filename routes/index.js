@@ -326,11 +326,10 @@ module.exports = function (app, addon) {
                      } else if (command.optionList == 'help') {
 
                          var help = {
-                             "/chef environment NAME - Returns what is cookbooks are active in this environment": "blah",
-                             "/chef health - Returns the health information of your chef server": "blah",
-                             "/chef license - Returns the license usage for your chef server": "blah",
+                             "/chef environment NAME - What is cookbooks are active in an environment": "blah",
                              "/chef nodes - Lists out all the machine that your chef server knows about": "blah",
-                             "/chef node-status FQDN - Returns information since the last converge of machine": "blah"
+                             "/chef node-status FQDN - Returns time since the last converge of machine": "blah",
+                             "Click the title to go to the detailed README and full commands.": "blah"
                          };
 
                          var stringResult = '';
@@ -341,16 +340,13 @@ module.exports = function (app, addon) {
 
                          var card = {
                              "style": "application",
-                             "url": "https://chef.io",
+                             "url": "https://github.com/chef-partners/chef-hipchat-plugin/#commands",
                              "format": "medium",
                              "id": uuid.v4(),
-                             "title": "List of nodes known by the chef server",
+                             "title": "List of commands for the Chef Hipchat integration",
                              "description": stringResult,
                              "icon": {
                                  "url": "http://emojipedia-us.s3.amazonaws.com/cache/9a/d9/9ad9efe204ca8b9626f23f2a5de99f43.png"
-                             },
-                             "activity": {
-                                 "html": "Expand this list for the commands that the chef plugin knows about..."
                              }
                          };
 
@@ -369,7 +365,7 @@ module.exports = function (app, addon) {
                                  color: "red"
                              }
                          };
-                         hipchat.sendMessage(req.clientInfo, req.context.item.room.id, stringResult, options)
+                         hipchat.sendMessage(req.clientInfo, req.context.item.room.id, stringResult, options);
                      }});
              });
 
