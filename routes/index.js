@@ -165,6 +165,20 @@ module.exports = function (app, addon) {
                              var timeString = JSON.stringify(jsonResult.timeSinceConverge, null, 2).replace(/"/g,'');
                              var fqdnString = JSON.stringify(jsonResult.fqdn, null, 2).replace(/"/g,'');
 
+                             var card = {
+                                 "style": "application",
+                                 "url": "https://" + jsonResult.fqdn,
+                                 "id": uuid.v4(),
+                                 "title": jsonResult.fqdn,
+                                 "description": fqdnString + " successfully converged " + timeString + " ago.",
+                                 "icon": {
+                                     "url": "http://i.imgur.com/zBLKh5G.png"
+                                 }
+                             };
+                             var msg = '<b>' + card.title + '</b>: ' + card.description;
+                             var opts = {'options': {'color': 'yellow'}};
+                             hipchat.sendMessage(req.clientInfo, req.context.item.room.id, msg, opts, card);
+
                              hipchat.sendMessage(req.clientInfo, req.context.item.room.id, '<strong>'+fqdnString+'</strong>' + ' successfully converged ' + timeString + ' ago.', options)
                                  .then(function (data) {
                                      res.send(200);
@@ -323,6 +337,31 @@ module.exports = function (app, addon) {
                 });
             }
            );
+
+
+    // Sample endpoint to send a card notification back into the chat room
+    // https://www.hipchat.com/docs/apiv2/method/send_room_notification.
+    // For more information on Cards, take a look at:
+    // https://developer.atlassian.com/hipchat/guide/hipchat-ui-extensions/cards
+    app.post('/test_note',
+             addon.authenticate(),
+             function (req, res) {
+                 var card = {
+                     "style": "link",
+                     "url": "https://www.hipchat.com",
+                     "id": uuid.v4(),
+                     "title": "El HipChat!",
+                     "description": "Great teams use HipChat: Group and private chat, file sharing, and integrations",
+                     "icon": {
+                         "url": "https://hipchat-public-m5.atlassian.com/assets/img/hipchat/bookmark-icons/favicon-192x192.png"
+                     }
+                 };
+                 var msg = '<b>' + card.title + '</b>: ' + card.description;
+                 var opts = {'options': {'color': 'yellow'}};
+                 hipchat.sendMessage(req.clientInfo, req.identity.roomId, msg, opts, card);
+                 res.json({status: "ok"});
+             }
+            );
 
     // Sample endpoint to send a card notification back into the chat room
     // https://www.hipchat.com/docs/apiv2/method/send_room_notification.
