@@ -290,7 +290,7 @@ module.exports = function (app, addon) {
                                      "url": "http://emojipedia-us.s3.amazonaws.com/cache/6b/8b/6b8bf79c48c94487e0c70a9e90aad624.png"
                                  },
                                  "activity": {
-                                     "html": "Here's a list of your <b>cookboks</b> per <b>environment</b>, it may be long list..."
+                                     "html": "Here's a list of your <b>cookbooks</b> per <b>environment</b>, it may be long list..."
                                  }
                              };
 
