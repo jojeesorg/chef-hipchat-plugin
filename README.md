@@ -30,7 +30,7 @@ Deploy/Install this plugin, then configure it. Both are explained in this README
 1. Provision a Ubuntu 14.04 machine
 1. Install [chef-client][chef_install] on the machine
 1. Either upload the [chef-hipchat-plugin-cookbook][chef-hipchat-cookbook] to your chef server, or run the `chef-solo` command that it suggests.
-1. Verify that you can connect to that machine, and see the `http://<machine>/atlassian-connect.json`
+1. Verify that you can connect to that machine, and see the `http://<machine>:3000/atlassian-connect.json`
 1. If your hipchat instance can reach the machine, and you chef server can reach the machine you've installed the plugin, you should be good to go.
 1. Continue to the Configuration section.
 
